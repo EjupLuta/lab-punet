@@ -71,7 +71,7 @@
           document.getElementById("status").textContent = jobs.length + " punë aktive";
           showDate();
         })
-        .catch(err => {
+        .catch(() => {
           document.getElementById("status").textContent = "Gabim në ngarkim";
         });
     }
@@ -176,7 +176,7 @@
     }
 
     loadJobs();
-    setInterval(loadJobs, 30000);
+    setInterval(loadJobs, 60000); // refresh çdo 1 minutë
   </script>
 </body>
 </html>
