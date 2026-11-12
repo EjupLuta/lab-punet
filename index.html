@@ -121,18 +121,31 @@
     }
 
     function startAutoScroll() {
-      clearInterval(scrollInterval);
-      const container = document.getElementById("tableContainer");
-      if (container.scrollHeight <= container.clientHeight) return;
+  clearInterval(scrollInterval);
+  const container = document.getElementById("tableContainer");
+  if (container.scrollHeight <= container.clientHeight) return;
 
-      scrollInterval = setInterval(() => {
-        container.scrollTop += 1;
-        if (container.scrollTop + container.clientHeight >= container.scrollHeight - 2) {
-          container.scrollTop = 0;
-        }
-      }, 40);
+  let direction = 1; // 1 = poshtë, -1 = lart
+  let pauseUntil = 0;
+
+  scrollInterval = setInterval(() => {
+    const now = Date.now();
+    if (now < pauseUntil) return;
+
+    container.scrollTop += direction;
+
+    // Arrin në fund
+    if (direction === 1 && container.scrollTop + container.clientHeight >= container.scrollHeight - 2) {
+      direction = -1;
+      pauseUntil = now + 5000; // qëndron 5 sekonda poshtë
     }
-
+    // Arrin në fillim
+    else if (direction === -1 && container.scrollTop <= 2) {
+      direction = 1;
+      pauseUntil = now + 5000; // qëndron 5 sekonda lart
+    }
+  }, 80); // dy herë më i ngadaltë
+}
     function selectJob(id) {
       selectedId = selectedId === id ? null : id;
       render();
